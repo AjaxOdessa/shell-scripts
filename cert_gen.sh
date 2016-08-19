@@ -1,17 +1,25 @@
 #!/bin/sh
 
+# Setting variables
 HOST="example.org"
 PASS="mypassword"
 BIT="4096"
 DAYS="365"
 
 ssl_info(){
+	# Country code, TWO letters
 	echo UA
+	# State, Region
 	echo State
+	# Locality
 	echo City
+	# Company name
 	echo Company
+	# Department
 	echo Department
+	# CN. For web purposes - FQDN
 	echo $HOST
+	# Responsible person contact email
 	echo email@example.com
 }
 
