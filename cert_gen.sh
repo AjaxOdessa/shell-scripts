@@ -6,7 +6,7 @@ BIT="4096"
 DAYS="365"
 
 ssl_info(){
-	echo Country
+	echo UA
 	echo State
 	echo City
 	echo Company
