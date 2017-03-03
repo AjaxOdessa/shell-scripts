@@ -1,29 +1,27 @@
 #!/bin/sh
 
 # Setting variables
-HOST="example.org"
 PASS="mypassword"
 BIT="4096"
 DAYS="365"
 
+COUNTRY="UA"
+STATE="State"
+LOCALITY="City"
+COMPANY="Company"
+DEPARTMENT="Department"
+HOST="example.org"
+EMAIL="email@example.com"
+
 ssl_info(){
-	# Country code, TWO letters
-	echo UA
-	# State, Region
-	echo State
-	# Locality
-	echo City
-	# Company name
-	echo Company
-	# Department
-	echo Department
-	# CN. For web purposes - FQDN
-	echo $HOST
-	# Responsible person contact email
-	echo email@example.com
+	echo $COUNTRY; echo $STATE; echo $LOCALITY; echo $COMPANY; echo $DEPARTMENT; echo $HOST; echo $EMAIL
+}
+csr_info(){
+	ssl_info; echo ""; echo ""
 }
 
 ssl_info | openssl req -x509 -nodes -days $DAYS -newkey rsa:$BIT -keyout $HOST.key -out $HOST.cer > /dev/null 2>&1
+csr_info | openssl req -new -sha256 -key $HOST.key -out $HOST.csr > /dev/null 2>&1
 openssl pkcs12 -export -in $HOST.cer -inkey $HOST.key -password pass:$PASS > $HOST.p12
 keytool -importkeystore -srckeystore $HOST.p12 -destkeystore $HOST.jks \
 	-srcstorepass $PASS -deststorepass $PASS \
@@ -32,4 +30,3 @@ keytool -importkeystore -srckeystore $HOST.p12 -destkeystore $HOST.jks \
 	-srckeypass $PASS -destkeypass $PASS \
 	-noprompt
 rm -f $HOST.p12
-
